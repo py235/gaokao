@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://gk.250951.xyz/sitemap.xml
