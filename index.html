@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>高考资源网站</title>
+    <title>高考资料库</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -15,7 +15,7 @@
         .countdown {
             background-color: #f44336;
             color: white;
-            padding: 20px;
+            padding: 10px;
             text-align: center;
             margin-bottom: 20px;
         }
@@ -49,16 +49,15 @@
             background-color: #f9f9f9;
             border: 1px solid #ddd;
             margin-top: -1px; /* 使列表项之间没有空隙 */
-            padding: 10px;
-            display: flex;
-            justify-content: center; /* 文字居中显示 */
-            align-items: center;
+            padding: 0; /* 修改为0，确保链接填充整个列表项 */
             cursor: pointer; /* 鼠标指针变为手型 */
         }
 
         #resourceList a {
             color: inherit; /* 继承父元素的颜色 */
             text-decoration: none; /* 去除下划线 */
+            display: block; /* 让链接填充整个列表项 */
+            padding: 10px; /* 将内边距移到链接上 */
         }
 
         #resourceList li:hover {
@@ -71,9 +70,8 @@
             color: white;
             text-align: center;
             padding: 10px 0;
-            position: fixed;
-            bottom: 0;
             width: 100%;
+            margin-top: 20px;
         }
 
         footer p {
@@ -84,7 +82,7 @@
 </head>
 <body>
     <div class="countdown">
-        <h1>高考倒计时</h1>
+        <h1>距离<span id="gaokao-year"></span>年高考还有</h1>
         <div id="timer">
             <span id="days">00</span>天
             <span id="hours">00</span>小时
@@ -102,8 +100,20 @@
         <p>以上资料均来自互联网公开渠道，如有侵权，请及时联系删除。如有资料投稿也可通过本邮箱联系：<a href="mailto:2509515581@qq.com" style="color: #007BFF;">2509515581@qq.com</a></p>
     </footer>
     <script>
+        function getNextGaokaoDate() {
+            const now = new Date();
+            const currentYear = now.getFullYear();
+            const gaokaoDate = new Date(currentYear, 5, 7, 9, 0, 0); 
+            
+           
+            if (now > gaokaoDate) {
+                gaokaoDate.setFullYear(currentYear + 1);
+            }
+            return gaokaoDate;
+        }
+
         function startTimer() {
-            const 高考日期 = new Date('2025-06-07T09:00:00'); // 假设高考日期为2025年6月7日
+            const 高考日期 = getNextGaokaoDate();
             const now = new Date();
             const timeLeft = 高考日期 - now;
 
@@ -120,6 +130,8 @@
             if (timeLeft < 0) {
                 clearInterval(timer);
                 document.getElementById('timer').innerHTML = '高考已经开始！';
+            } else {
+                document.getElementById('gaokao-year').textContent = 高考日期.getFullYear();
             }
         }
 
@@ -127,6 +139,7 @@
 
         // 动态生成资源列表
         const resources = [
+            { name: '高考专属资料包（必看）', url: 'https://pan.baidu.com/s/1GtQ_7aV5hH8ALJFoAsC8Xw?pwd=q1xq'},
             { name: '高考历年真题', url: 'https://pan.baidu.com/s/1z9GA3-dSoRH-Dxf4DB80hg?pwd=u11s' },
             { name: '语文资料', url: 'https://pan.quark.cn/s/3a6f40c7b0e5' },
             { name: '数学资料', url: 'https://pan.quark.cn/s/e21d682eb23a' },
@@ -139,13 +152,21 @@
             { name: '高考志愿填报', url: 'https://pan.quark.cn/s/b5d5d63569c3' },
             { name: '高中全科', url: 'https://pan.quark.cn/s/5fd41a1157fc' },
             { name: '最全电子课本', url: 'https://pan.baidu.com/s/1GjXTGimmxk6Lu9YAztLqAA?pwd=s2tu' },
-            // 更多资源...
+           
+           
         ];
 
         const resourceList = document.getElementById('resourceList');
         resources.forEach(resource => {
             const listItem = document.createElement('li');
-            listItem.innerHTML = `<a href="${resource.url}" target="_blank">${resource.name}</a>`;
+            const link = document.createElement('a');
+            link.href = resource.url;
+            link.target = '_blank';
+            link.style.display = 'block'; // 让链接填充整个列表项
+            link.style.textDecoration = 'none'; // 去除下划线
+            link.style.color = 'inherit'; // 继承颜色
+            link.textContent = resource.name;
+            listItem.appendChild(link);
             resourceList.appendChild(listItem);
         });
     </script>
